@@ -16,8 +16,8 @@ document.getElementById('form').onsubmit = async function(event) {
     submitBtn.disabled = true;
     resetBtn.disabled = true;
     
-    submitBtn.style.cursor = "wait";
-    resetBtn.style.cursor = "wait";
+    submitBtn.style.cursor = "not-allowed";
+    resetBtn.style.cursor = "not-allowed";
 
     submitBtn.textContent = "Submitting...";
     
