@@ -9,6 +9,17 @@ function Request(firstName, lastName, email, phoneNo, address, designID) {
 
 document.getElementById('form').onsubmit = async function(event) {
     event.preventDefault();
+
+    const submitBtn = document.getElementById('submit');
+    const resetBtn = document.getElementById('reset');
+
+    submitBtn.disabled = true;
+    resetBtn.disabled = true;
+    
+    submitBtn.style.cursor = "wait";
+    resetBtn.style.cursor = "wait";
+
+    submitBtn.textContent = "Submitting...";
     
     const person = {
         firstName: document.getElementById('firstName').value,
@@ -31,17 +42,27 @@ document.getElementById('form').onsubmit = async function(event) {
             },
             body: JSON.stringify(newRequest)
         });
+        const message = await response.text();
 
-        if (response.ok) {
-            alert(`Hello ${person.firstName}, your request has been sent to us. Please check your email.`);
+        if (response.ok && message === "Finished") {
+            submitBtn.textContent = "Success";
+            alert(`Hello ${person.firstName}, your request has been sent to us. Please check your email for confirmation.`);
             location.href = "../index.html";
         }
         else {
-            const errorMessage = await response.text();
-            throw new Error(`Server responded with status ${response.status}: ${errorMessage}`);
+            submitBtn.textContent = "Failed";
+            throw new Error(`Server responded with status ${response.status} & message ${message}`);
         }
     } catch (err) {
         console.error("Error when sending request to back-end:", err.message);
-        alert(`Hello ${person.firstName}, there was an error when sending your request. Please try again later`);
+        alert(`Hello ${person.firstName}, there was an error when sending your request. Please try again later.`);
+    } finally {
+        submitBtn.textContent = "Submit";
+
+        submitBtn.disabled = false;
+        resetBtn.disabled = false;
+
+        submitBtn.style.cursor = "pointer";
+        resetBtn.style.cursor = "pointer";
     }
 };
