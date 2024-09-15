@@ -44,7 +44,7 @@ document.getElementById('form').onsubmit = async function(event) {
         });
         const message = await response.text();
 
-        if (response.ok && message === "Finished") {
+        if (response.ok && message === "Done") {
             submitBtn.textContent = "Success";
             alert(`Hello ${person.firstName}, your request has been sent to us. Please check your email for confirmation.`);
             location.href = "../index.html";
